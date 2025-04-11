@@ -19,8 +19,8 @@ ws.on('connection', (client) => {
   client.on('message', (message) => {
     const msg = message.toString()
     for (let c of clients) {
-      if (c.readyState === WebSocketServer.OPEN) {
-        c.Send(msg)
+      if (c.readyState === WebSocket.OPEN) {
+        c.send(msg)
       }
     }
   });
