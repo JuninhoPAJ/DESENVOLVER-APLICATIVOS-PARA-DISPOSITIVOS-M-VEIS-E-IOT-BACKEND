@@ -9,4 +9,7 @@ router.route("/product")
 router.route("/product/:id")
 .get((req, res) => productController.getProductById(req, res))
 
+router.route("/product")
+.post((req, res) => productController.addProduct(req, res))
+
 export default router;

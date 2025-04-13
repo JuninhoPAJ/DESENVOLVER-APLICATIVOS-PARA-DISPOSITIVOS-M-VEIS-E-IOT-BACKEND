@@ -22,6 +22,36 @@ const productController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+    addProduct: async (req, res) => {
+        try {
+            // Cria um novo produto com os dados enviados no corpo da requisição
+            const { id, name, description, price, image } = req.body;
+
+            // Verifica se todos os campos necessários foram enviados
+            if (!id || !name || !description || !price || !image) {
+                return res.status(400).json({ message: 'Missing required fields' });
+            }
+
+            // Cria uma nova instância do produto no banco de dados
+            const newProduct = new productModel({
+                id,
+                name,
+                description,
+                price,
+                image,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+
+            // Salva o produto no banco de dados
+            await newProduct.save();
+
+            // Retorna a resposta com o produto criado
+            res.status(201).json({ message: 'Product added successfully', product: newProduct });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 };
 
