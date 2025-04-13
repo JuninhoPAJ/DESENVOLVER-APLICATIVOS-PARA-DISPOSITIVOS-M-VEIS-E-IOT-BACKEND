@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import UserRouter from "./src/routers/UserRouter.js";
 import ProductRouter from "./src/routers/ProductRouter.js";
+import CartRouter from "./src/routers/CartRouter.js"
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import http from "http";
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api", UserRouter);
 app.use("/api", ProductRouter);
+app.use("/api", CartRouter)
 dotenv.config();
 mongoose.connect(process.env.MONGODB_URI)
 server.listen(process.env.PORT, () => {
