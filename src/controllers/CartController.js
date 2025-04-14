@@ -19,11 +19,20 @@ const CartController = {
                 total += item.quantity * item.price;
             }
 
+            let resumo = `Compra realizada por ${userName}.\n\nProdutos comprados:\n`;
+
+            for (const item of items) {
+                resumo += `- ${item.quantity}x ${item.name} por R$${item.price} cada\n`;
+            }
+
+            resumo += `\nTotal da compra: R$${total.toFixed(2)}.`;
+
             const newCart = await CartModel.create({
                 user,
                 userName,
                 items,
                 totalPrice: total,
+                resumoTexto: resumo
             });
 
             res.status(201).json({ message: "Pedido registrado com sucesso", cart: newCart });

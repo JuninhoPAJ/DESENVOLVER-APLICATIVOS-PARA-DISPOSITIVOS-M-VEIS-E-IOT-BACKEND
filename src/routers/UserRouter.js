@@ -13,9 +13,9 @@ router.route("/ia")
     .post((req, res) => userController.promptWithGemini(req, res));
 
 router.route("/longContext")
-    .post((req, res) => userController.longContext(req, res));
+    .post((req, res) => userController.chatAboutAllCarts(req, res));
 
-router.route("/user:id")
+router.route("/user/:id")
     .get((req, res) => userController.getUserById(req, res))
     .delete((req, res) => userController.deleteUserById(req, res))
     .put((req, res) => userController.updateUserById(req, res));

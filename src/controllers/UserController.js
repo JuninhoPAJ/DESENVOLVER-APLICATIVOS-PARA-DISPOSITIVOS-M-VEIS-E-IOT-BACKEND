@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import UserModel from "../models/UserModel.js";
+import CartModel from "../models/CartModel.js"
 import aiService from "../services/IaService.js";
 
 const userController = {
@@ -23,8 +24,8 @@ const userController = {
 
     getUserById: async (req, res) => {
         try {
-            const reuslt = await UserModel.findById(req.params.id);
-            if (!reuslt) {
+            const result = await UserModel.findById(req.params.id);
+            if (!result) {
                 return res.status(404).json({ message: "User not found" });
             }
             res.status(200).json(result);
@@ -70,6 +71,29 @@ const userController = {
         const pdfPath = "./src/context/Currículo - Jonildo 2025.pdf"
         const result = await aiService.longContext(req.body.prompt, pdfPath)
         res.status(200).json(result.text());
+    },
+
+    chatAboutAllCarts: async (req, res) => {
+        try {
+            const { prompt } = req.body;
+
+            const carts = await CartModel.find(); // pega TODOS os carrinhos
+
+            if (!carts || carts.length === 0) {
+                return res.status(404).json({ message: "Nenhuma compra encontrada." });
+            }
+
+            const resumos = carts.map(cart => cart.resumoTexto).filter(Boolean);
+
+            if (resumos.length === 0) {
+                return res.status(400).json({ message: "Nenhum resumo disponível." });
+            }
+
+            const result = await aiService.allCartsContext(prompt, resumos);
+            res.status(200).json(result.text());
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     },
 
     loginUser: async (req, res) => {

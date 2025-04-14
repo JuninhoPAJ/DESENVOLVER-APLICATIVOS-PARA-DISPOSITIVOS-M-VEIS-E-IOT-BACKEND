@@ -68,9 +68,27 @@ const aiService = {
         return result.response
     },
 
-    sinthetizePrompt: () => {
+    allCartsContext: async (prompt, resumos) => {
+        const contexto = resumos.join("\n\n");
 
-    },
+        const fullPrompt = 
+            `Você é um analista de dados de um sistema de pedidos. Abaixo estão resumos de compras realizadas por diferentes usuários. Analise todos os resumos e responda à pergunta com base nas informações contidas neles.
+
+            Resumos:
+            ${contexto}
+
+            Pergunta:
+            ${prompt}
+
+            Dê uma resposta precisa, clara, em português e com base apenas nos dados fornecidos.`;
+        const result = await model.generateContent({
+            contents: [
+                { parts: [{ text: fullPrompt }] }
+            ]
+        }, { timeout: 60000 });
+
+        return result.response;
+    }
 }
 
 export default aiService

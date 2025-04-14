@@ -13,6 +13,7 @@ const CartSchema = new Schema({
             price: { type: Number, required: true },
         },
     ],
+    resumoTexto: { type: String },
 
     totalPrice: { type: Number, required: true },
     createdAt: { type: Date, default: Date.now },
